@@ -1,0 +1,18 @@
+1) Basic Shell Template
+https://sites.cs.ucsb.edu/~tyang/class/170s15/projects/HW0.html
+
+2) G4G Linux Shell
+https://www.geeksforgeeks.org/making-linux-shell-c/
+
+3) C Tutorial with fork, exec and other commands we will use
+https://www.cs.rutgers.edu/~pxk/416/notes/c-tutorials/index.html
+
+4) Very simple shell video tutorials (maybe 1st to look at since so simple)
+https://www.youtube.com/watch?v=QUCSyDFPbOI
+https://www.youtube.com/watch?v=z4LEuxMGGs8
+
+5) Video on fork() command
+https://www.youtube.com/watch?v=9seb8hddeK4
+
+6) Shell video with fork and exec (long)
+https://www.youtube.com/watch?v=5Qim9wufNP0
