@@ -1,11 +1,12 @@
-CC      = gcc
-CFLAGS  = -O
-LDFLAGS  = -O 
+CC      := gcc
+CFLAGS  := -O -Wall
+LDFLAGS  := -O 
+
 
 
 all: cppshell
 
-simple:  cppshell.o
+cppshell:  cppshell.o ls.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 run: 
@@ -18,6 +19,8 @@ clean:
 	rm cppshell
 
 
+
 .c.o:
 	$(CC)  $(CFLAGS) -c $<
 
+.PHONY: all

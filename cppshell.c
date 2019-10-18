@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include "ls.h"
 
 #define MAX_TOKEN_LENGTH 50
 #define MAX_TOKEN_COUNT 100
@@ -43,7 +44,12 @@ void loop()
         {
             if (strcmp(arguments[0], "exit") == 0)
                 exit(0);
-            runcommand(command, arguments);
+
+            else if (strcmp(command, "ls") == 0) {
+	        ls(arguments);
+            } else {
+                runcommand(command, arguments);
+	    }
         }
         printf("%s",SHELL_PROMPT); 
     }
@@ -54,10 +60,10 @@ void runcommand(char* command, char** args)
   pid_t pid = fork();
   if(pid)
   { // parent
-    	waitpid(pid, NULL, 0);
+	  waitpid(pid, NULL, 0);
   }
   else
   { // child
-    	execvp(command, args);
+	  execvp(command, args);
   }
 }
