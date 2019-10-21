@@ -3,20 +3,23 @@
 #include <stdio.h>
 
 
-void ls(char **args) {
-	//TODO Error handling of nonexistant paths
+void ls(char *args) {
 	//TODO Enable options
 	DIR *dir;
 	struct dirent *file;
 	char *path; 
 
-	if (args[1]) {
-		path = args[1];
+	if (args) {
+		path = args;
 	}else {
 		path = ".";
 	}
 
 	dir = opendir(path);
+	if(!dir) {
+		perror("opendir() failed");
+		return;
+	}
 	while ((file = readdir(dir)) != NULL) {
 		if (file->d_name)
 			printf("%s ", file->d_name);

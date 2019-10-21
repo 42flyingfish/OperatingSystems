@@ -46,7 +46,7 @@ void loop()
                 exit(0);
 
             else if (strcmp(command, "ls") == 0) {
-	        ls(arguments);
+	        ls(arguments[1]);
             } else {
                 runcommand(command, arguments);
 	    }
