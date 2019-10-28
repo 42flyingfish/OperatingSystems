@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "cd.h"
 #include "ls.h"
+#include "pwd.h"
 
 
 #define MAX_TOKEN_LENGTH 50
@@ -24,6 +25,7 @@ int main(int argc, char** argv) // args when calling shell, might not use at all
 void loop()
 {
     char line[MAX_LINE_LENGTH];
+    printf("\033[1;35m");
     printf("%s",SHELL_PROMPT); 
     cd(""); 
     
@@ -53,10 +55,14 @@ void loop()
             }
             else if (strcmp(command, "cd") == 0) {
 	            cd(arguments[1]);
+            }
+            else if (strcmp(command, "pwd") == 0) {
+	            pwd();
             } else {
                 runcommand(command, arguments);
 	    }
         }
+        printf("\033[1;35m");
         printf("%s",SHELL_PROMPT);
         cd(""); 
     }
