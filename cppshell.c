@@ -3,7 +3,9 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include "cd.h"
 #include "ls.h"
+
 
 #define MAX_TOKEN_LENGTH 50
 #define MAX_TOKEN_COUNT 100
@@ -23,6 +25,7 @@ void loop()
 {
     char line[MAX_LINE_LENGTH];
     printf("%s",SHELL_PROMPT); 
+    cd(""); 
     
     while(fgets(line, MAX_LINE_LENGTH, stdin)) {
     	// Build the command and arguments, using execv conventions.
@@ -46,12 +49,16 @@ void loop()
                 exit(0);
 
             else if (strcmp(command, "ls") == 0) {
-	        ls(arguments[1]);
+	            ls(arguments[1]);
+            }
+            else if (strcmp(command, "cd") == 0) {
+	            cd(arguments[1]);
             } else {
                 runcommand(command, arguments);
 	    }
         }
-        printf("%s",SHELL_PROMPT); 
+        printf("%s",SHELL_PROMPT);
+        cd(""); 
     }
 }
 

@@ -1,26 +1,17 @@
-CC      := gcc
-CFLAGS  := -O -Wall
-LDFLAGS  := -O 
+# compiler to use
+CC = gcc
+# enable warnings flag for gcc
+CFLAGS = -Wall -g
+# recompile if header file changes
+DEPS = ls.h cd.h
+OBJ = cppshell.o ls.o cd.o
 
+%.o: %.c $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
+cppshell.out: $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
 
-all: cppshell
-
-cppshell:  cppshell.o ls.o
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-run: 
-	./cppshell
-
-test: 
-	./cppshell < testfile
-
-clean:
-	rm cppshell
-
-
-
-.c.o:
-	$(CC)  $(CFLAGS) -c $<
-
-.PHONY: all
+.PHONY: force
+force:
+	./cppshell.out
