@@ -3,8 +3,8 @@ CC = gcc
 # enable warnings flag for gcc
 CFLAGS = -Wall -g
 # recompile if header file changes
-DEPS = ls.h cd.h
-OBJ = cppshell.o ls.o cd.o
+DEPS = ls.h cd.h pwd.h
+OBJ = cppshell.o ls.o cd.o pwd.o
 
 %.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -c -o $@ $<
