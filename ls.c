@@ -9,12 +9,18 @@ void ls(char *args) {
 	struct dirent *file;
 	char *path; 
 
+	// *args is used for a path
+	// if *args is Null we instead assume that the path is the pwd
 	if (args) {
 		path = args;
 	}else {
 		path = ".";
 	}
 
+	// We attempt to open the mentioned in path
+	// If path happens to an invalid option, print and error message and return
+	// Otherwise transverse through the directory and print the file names (d_name)
+	// Files are currently printed with no ordering in mind.
 	dir = opendir(path);
 	if(!dir) {
 		perror("opendir() failed");
