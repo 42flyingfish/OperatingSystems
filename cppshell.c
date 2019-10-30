@@ -6,6 +6,7 @@
 #include "cd.h"
 #include "ls.h"
 #include "pwd.h"
+#include "rmdir.h"
 
 #define MAX_CHAR_COUNT 100
 #define MAX_LINE_LENGTH 512
@@ -45,9 +46,9 @@ void loop()
     	arguments[argument_count] = NULL;
         if(argument_count>0)
         {
-            if (strcmp(arguments[0], "exit") == 0)
+            if (strcmp(arguments[0], "exit") == 0){
                 exit(0);
-
+            }
             else if (strcmp(command, "ls") == 0) {
 	            ls(arguments[1]);
             }
@@ -56,9 +57,12 @@ void loop()
             }
             else if (strcmp(command, "pwd") == 0) {
 	            pwd();
+            } 
+            else if (strcmp(command, "rmdir") == 0) {
+	            cpprmdir(arguments[1]);
             } else {
                 runcommand(command, arguments);
-	    }
+	        }
         }
         printPrompt();
     }

@@ -5,17 +5,28 @@
 
 void cd(char *args) {
     char s[100];
-    if(strcmp(args, "") != 0)
+    char *path;
+    if(args)
     {
-        // using the command 
-        chdir(args);
+        path = args;
     }
     else
     {
-        // printing current working directory 
+        path = ".";
+    }
+    
+    if(strcmp(path, "") != 0)
+    {
+        // using the command 
+        chdir(path);
+    }
+    else
+    {
+        // printing current working directory
+        printf("\033[1;31m");
         printf("%s", getcwd(s, 100));
         // todo get user level symbol
+        printf("\033[0m");
         printf("%s", "$ ");
     }
-
 }
