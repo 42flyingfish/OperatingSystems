@@ -7,24 +7,24 @@
 void cpprmdir(char *args) {
 	//TODO Enable options
 	DIR *dir;
-	struct dirent *file;
-	char *path; 
+	char *path;
 
 	// *args is used for a path
 	// if *args is Null throw error msg
 	if (args) {
 		path = args;
+		// We attempt to open the mentioned in path
+		// If path happens to an invalid option, print and error message and return
 		dir = opendir(path);
-		if(!dir) {
-			perror("opendir() failed");
+		if(dir) {
+			closedir(dir);
+		} else {
+			perror("Error!");
 			return;
 		}
-		while ((file = readdir(dir)) != NULL) {
-			if (file->d_name)
-				printf("%s ", file->d_name);
-		}
-	printf("\n");
-	closedir(dir);
+		int rem = remove(path);
+		if(rem != 0)
+			perror("Error!");
 	} else {
 		printf("rmdir: missing operand!\n");
 	}
