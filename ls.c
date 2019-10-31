@@ -27,8 +27,11 @@ void ls(char *args) {
 		return;
 	}
 	while ((file = readdir(dir)) != NULL) {
-		if (file->d_name)
-			printf("%s ", file->d_name);
+		if(file->d_type == 4){	//4 is for dir, 8 is for file
+			printf("\033[1;34m");	//highlight dir as bold blue
+		}
+		printf("%s\t", file->d_name);
+		printf("\033[0m");	//clear text color to normal
 	}
 	printf("\n");
 	closedir(dir);
