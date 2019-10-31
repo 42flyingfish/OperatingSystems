@@ -7,6 +7,7 @@
 #include "ls.h"
 #include "pwd.h"
 #include "rmdir.h"
+#include "cp.h"
 
 #define MAX_CHAR_COUNT 100
 #define MAX_LINE_LENGTH 512
@@ -60,6 +61,9 @@ void loop()
             } 
             else if (strcmp(command, "rmdir") == 0) {
 	            cpprmdir(arguments[1]);
+            } 
+            else if (strcmp(command, "cp") == 0) {
+	            cp(arguments[1]);
             } else {
                 runcommand(command, arguments);
 	        }
