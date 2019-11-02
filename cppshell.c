@@ -9,20 +9,24 @@
 #include "rmdir.h"
 #include "cp.h"
 
-#define MAX_CHAR_COUNT 100
+//global variables to define max parameters for args and input line
+#define MAX_ARG_COUNT 100
 #define MAX_LINE_LENGTH 512
+//prompt header, TODO: replace with current system user
 #define SHELL_PROMPT "CPPShell: "
 
 void loop();
 void printPrompt();
 void runcommand(char *command, char **args);
 
+//main is basically a loop
 int main(int argc, char** argv) // args when calling shell, might not use at all -CE
 {    
     loop();
     return 0;
 }
 
+//loop the shell until exit is called
 void loop()
 {
     char line[MAX_LINE_LENGTH];
@@ -32,20 +36,26 @@ void loop()
     while(fgets(line, MAX_LINE_LENGTH, stdin)) {
     	// Build the command and arguments, using execv conventions.
     	line[strlen(line)-1] = '\0'; // get rid of the new line
-    	char* command = NULL;
-    	char* arguments[MAX_CHAR_COUNT];
+    	char *command = NULL;   //initialize command var
+    	char *arguments[MAX_ARG_COUNT];
     	int argument_count = 0;
-    	char* token = strtok(line, " ");
+        //split line by spaces to get tokens(keywords)
+        //points token var to line and gets first token
+    	char *token = strtok(line, " ");
     	while(token)
         {
-      		if(!command) 
+            //first token is the command name, will only happen on first pass
+      		if(!command)
                 command = token;
       		arguments[argument_count] = token;
 	      	argument_count++;
+            //get next token
       		token = strtok(NULL, " ");
     	}
+        //initialize args array up to arg count
     	arguments[argument_count] = NULL;
-        if(argument_count>0)
+        //select command if any are passed in
+        if(argument_count > 0)
         {
             if (strcmp(arguments[0], "exit") == 0){
                 exit(0);
@@ -75,10 +85,10 @@ void loop()
 void printPrompt()
 {
     // magenta bold color prompt
-        printf("\033[1;35m");
-        printf("%s",SHELL_PROMPT);
-        // print directory inline
-        cd(""); 
+    printf("\033[1;35m");
+    printf("%s",SHELL_PROMPT);
+    // print directory inline
+    cd(""); 
 }
 
 void runcommand(char* command, char** args)
