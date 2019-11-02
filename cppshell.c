@@ -72,6 +72,9 @@ void loop()
             else if (strcmp(command, "rmdir") == 0) {
 	            cpprmdir(arguments[1]);
             } 
+            else if (strcmp(command, "mkdir") == 0) {
+	            _mkdir(arguments[1]);
+            } 
             else if (strcmp(command, "cp") == 0) {
 	            cp(arguments[1], arguments[2]);
             } else {
