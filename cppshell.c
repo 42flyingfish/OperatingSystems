@@ -15,7 +15,7 @@
 
 void loop();
 void printPrompt();
-void runcommand(char* command, char** args);
+void runcommand(char *command, char **args);
 
 int main(int argc, char** argv) // args when calling shell, might not use at all -CE
 {    
@@ -63,7 +63,7 @@ void loop()
 	            cpprmdir(arguments[1]);
             } 
             else if (strcmp(command, "cp") == 0) {
-	            cp(arguments[1]);
+	            cp(arguments[1], arguments[2]);
             } else {
                 runcommand(command, arguments);
 	        }

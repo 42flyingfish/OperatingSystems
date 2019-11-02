@@ -1,7 +1,7 @@
 #include <dirent.h> // for DIR, opendir, readdir, and closedir
-#include "rmdir.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "rmdir.h"
 
 
 void cpprmdir(char *args) {
@@ -19,14 +19,14 @@ void cpprmdir(char *args) {
 		if(dir) {
 			closedir(dir);
 		} else {
-			perror("Error!");
+			perror("Error! (rmdir)");
 			return;
 		}
 		//Attempt remove of dir and return status, 0 means successful rem
 		int rem = remove(path);
 		//Show error if could not remove dir
 		if(rem != 0)
-			perror("Error!");
+			perror("Error! (rmdir)");
 	} else {
 		printf("rmdir: missing operand!\n");
 	}

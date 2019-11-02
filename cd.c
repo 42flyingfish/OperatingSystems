@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <string.h>
-#include "cd.h"
 #include <stdio.h>
+#include "cd.h"
 
 void cd(char *args) {
     char s[100];
