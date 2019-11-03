@@ -8,6 +8,7 @@
 #include "pwd.h"
 #include "rmdir.h"
 #include "cp.h"
+#include "mkdir.h"
 
 //global variables to define max parameters for args and input line
 #define MAX_ARG_COUNT 100
@@ -73,7 +74,7 @@ void loop()
 	            cpprmdir(arguments[1]);
             } 
             else if (strcmp(command, "mkdir") == 0) {
-	            _mkdir(arguments[1]);
+	            cppmkdir(arguments[1]);
             } 
             else if (strcmp(command, "cp") == 0) {
 	            cp(arguments[1], arguments[2]);

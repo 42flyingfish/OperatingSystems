@@ -1,6 +1,7 @@
 #ifndef MKDIR_H
 #define MKDIR_H
 
-void _mkdir(char *path);
+// Name was chosen not to conflict with mkdir()
+void cppmkdir(char *path);
 
 #endif

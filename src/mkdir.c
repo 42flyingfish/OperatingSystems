@@ -4,7 +4,7 @@
 #define mode 0755
 
 
-void _mkdir(char *path) {
+void cppmkdir(char *path) {
 	if (mkdir(path, mode) != 0) {
 		perror("mkdir failed");
 	}
