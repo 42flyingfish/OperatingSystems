@@ -4,6 +4,7 @@ CC = gcc
 CFLAGS = -Wall -g
 # recompile if header file changes
 
+VPATH := src
 DEPS = ls.h cd.h pwd.h rmdir.h mkdir.h cp.h
 OBJ = cppshell.o ls.o cd.o pwd.o rmdir.o mkdir.o cp.o
 
