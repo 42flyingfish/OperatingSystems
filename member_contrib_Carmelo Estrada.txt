@@ -1,0 +1,8 @@
+Carmelo Estrada
+
+I started the template for the cppshell.c in which we both added our functions and both worked on.
+I also wrote cd, cp, pwd, and the first pass of rmdir.
+We both wrote a makefile and combined both our efforts into the current makefile.
+I also wrote the testscript bash script that runs several test cases for all the commands.
+
+By having each command as its own file linked by a header, we were able to split up the work based on each command, and tracked who was working on what via issues on git.
