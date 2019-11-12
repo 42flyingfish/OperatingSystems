@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <meta charset="utf-8"/>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+                
+        </head>
+<style>
+
+    /* #whack-a-mole{ width:100vw; height:100vh; overflow:hidden; position:relative;} */
+    body{ width:100%; height:100%; overflow:hidden;}
+
+    .mole{ 
+        background-color:rgb(128, 64, 0); 
+        border-radius:100px 100px 0px 0px;
+        height:100%;
+        width:10%;
+        position:absolute; 
+        top: 100%;
+        background-image:url(mole.bmp);
+        background-size:100%;
+        background-repeat:no-repeat;
+        /* background-position:0px 25px; */
+        background-position:0% 5%;
+        z-index:2;
+        }
+    .left_ear{
+        background-color:rgb(128, 64, 0); 
+        border-radius:100px;
+        position:absolute;
+        float:left;
+        min-width: 30%;
+        padding-top: 30%;
+        z-index:-1;
+    }
+    .right_ear{
+        background-color:rgb(128, 64, 0); 
+        border-radius:100px;
+        position:absolute;
+        float:right;
+        min-width: 30%;
+        padding-top: 30%;
+        left:70%;
+        z-index:-1;
+    }
+    .try_again { cursor:pointer; }
+    #mole1 { left: 10%; }
+    #mole2 { left: 45%; }
+    #mole3 { left: 80%; }
+
+    .scorezone{font-family:arial; font-size:5vw; position:absolute; right:5%; z-index:3;}
+    
+</style>
+						
+							
+	<body>
+
+		<div class="scorezone">GAME OVER
+            <div class="try_again">TRY AGAIN</div>
+        </div>
+
+		<div class="mole" id="mole1" style="top: 100%; background-image: url('mole.bmp');">
+			<div class="left_ear"></div>
+			<div class="right_ear"></div>
+		</div>
+		<div class="mole" id="mole2" style="top: 100%; background-image: url('mole.bmp');">
+			<div class="left_ear"></div>
+			<div class="right_ear"></div>
+		</div>
+		<div class="mole" id="mole3" style="top: 100%; background-image: url('mole.bmp');">
+			<div class="left_ear"></div>
+			<div class="right_ear"></div>
+		</div>
+
+	</body>
+
+	<script>
+		var do_only_once = 0;
+
+		jQuery(document).ready(function(){
+
+                
+
+				var add = 0;
+
+				function game_over(){
+	
+					jQuery('.mole').stop().animate({'top':'100%'},300);
+					jQuery('.scorezone').html('GAME OVER');
+					jQuery('.scorezone').append('<div class="try_again">TRY AGAIN</div>');
+	
+				}
+	
+				function start(){
+					add = 0;
+					jQuery('.scorezone').html('Score: ' + add);
+					jQuery('.mole').animate({'top':'0%'},5000, function(){
+						game_over();
+						jQuery('.try_again').click(function(){start();});
+					});
+				}
+
+				jQuery('.mole').hover(function(){
+
+					jQuery(this).css('background-image','url(hurt.bmp)');
+					jQuery(this).stop().animate({'top':'100%'},300, function(){
+
+						add = add - (-1);
+						jQuery('.scorezone').html('Score: ' + add);
+						jQuery(this).css('background-image','url(mole.bmp)');
+						jQuery(this).animate({'top':'0%'},5000, function(){
+
+							game_over();
+							jQuery('.try_again').click(function(){start();});
+						});
+
+					});
+                });
+
+                function wack(moleNum) {
+                $(moleNum).css('background-image','url(hurt.bmp)');
+                $(moleNum).stop().animate({'top':'100%'},300, function(){
+
+                    add = add - (-1);
+                    $('.scorezone').html('Score: ' + add);
+                    $(moleNum).css('background-image','url(mole.bmp)');
+                    $(moleNum).animate({'top':'0%'},5000, function(){
+
+                        game_over();
+                        jQuery('.try_again').click(function(){start();});
+                    });
+                });
+                }
+                
+                var keyArray = [97, 115, 100]; //a,s,d
+
+                $(document).keypress(function(e) {
+                    if(e.which == 13) {
+                        // enter pressed
+                    }
+                    if(e.which == keyArray[0]) {
+                        // a pressed
+                        wack("#mole1");
+                    }
+                    if(e.which == keyArray[1]) {
+                        // s pressed
+                        wack("#mole2");
+                    }
+                    if(e.which == keyArray[2]) {
+                        // d pressed
+                        wack("#mole3");
+                    }
+                });
+				
+			if (do_only_once == 0){
+
+			do_only_once = 1;
+
+				start();
+			}
+		});
+    </script>
+    </html>
