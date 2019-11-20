@@ -6,7 +6,6 @@
                 
         </head>
 <style>
-
     /* #whack-a-mole{ width:100vw; height:100vh; overflow:hidden; position:relative;} */
     body{ width:100%; height:100%; overflow:hidden;}
 
@@ -43,33 +42,54 @@
         left:70%;
         z-index:-1;
     }
-    .try_again { cursor:pointer; }
+    .word{
+        letter-spacing: 3px;
+        font-size: 15ch;
+        color: white;
+        /* color: black;
+        -webkit-text-fill-color: white;
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: black;  */
+        text-shadow:
+            -2px -2px 0 #000,  
+            2px -2px 0 #000,
+            -2px 2px 0 #000,
+            2px 2px 0 #000;
+        padding-left: 20%;
+
+    }
+    .try_again { 
+        cursor:pointer;
+        border: 2px;
+        border-style: solid;
+        background-color: gold;
+    }
     #mole1 { left: 10%; }
     #mole2 { left: 45%; }
     #mole3 { left: 80%; }
 
     .scorezone{font-family:arial; font-size:5vw; position:absolute; right:5%; z-index:3;}
-    
 </style>
-						
-							
+		
 	<body>
-
 		<div class="scorezone">GAME OVER
             <div class="try_again">TRY AGAIN</div>
         </div>
 
 		<div class="mole" id="mole1" style="top: 100%; background-image: url('mole.bmp');">
 			<div class="left_ear"></div>
-			<div class="right_ear"></div>
+            <div class="right_ear"></div>
+            <div class="word" id="word1">fj</div>
 		</div>
 		<div class="mole" id="mole2" style="top: 100%; background-image: url('mole.bmp');">
 			<div class="left_ear"></div>
-			<div class="right_ear"></div>
+            <div class="right_ear"></div>
+            <div class="word" id="word2">dk</div>
 		</div>
 		<div class="mole" id="mole3" style="top: 100%; background-image: url('mole.bmp');">
 			<div class="left_ear"></div>
-			<div class="right_ear"></div>
+            <div class="right_ear"></div>
+            <div class="word" id="word3">sl</div>
 		</div>
 
 	</body>
@@ -78,17 +98,12 @@
 		var do_only_once = 0;
 
 		jQuery(document).ready(function(){
-
-                
-
 				var add = 0;
 
 				function game_over(){
-	
 					jQuery('.mole').stop().animate({'top':'100%'},300);
 					jQuery('.scorezone').html('GAME OVER');
 					jQuery('.scorezone').append('<div class="try_again">TRY AGAIN</div>');
-	
 				}
 	
 				function start(){
@@ -100,63 +115,103 @@
 					});
 				}
 
-				jQuery('.mole').hover(function(){
-
-					jQuery(this).css('background-image','url(hurt.bmp)');
-					jQuery(this).stop().animate({'top':'100%'},300, function(){
-
-						add = add - (-1);
-						jQuery('.scorezone').html('Score: ' + add);
-						jQuery(this).css('background-image','url(mole.bmp)');
-						jQuery(this).animate({'top':'0%'},5000, function(){
-
-							game_over();
-							jQuery('.try_again').click(function(){start();});
-						});
-
-					});
-                });
+				// jQuery('.mole').hover(function(){
+                //     jQuery(this).css('background-image','url(hurt.bmp)');
+                    
+				// 	jQuery(this).stop().animate({'top':'100%'},300, function(){
+				// 		add++;
+				// 		jQuery('.scorezone').html('Score: ' + add);
+                //         jQuery(this).css('background-image','url(mole.bmp)');
+                        
+				// 		jQuery(this).animate({'top':'0%'},5000, function(){
+				// 			game_over();
+				// 			jQuery('.try_again').click(function(){start();});
+				// 		});
+				// 	});
+                // });
 
                 function wack(moleNum) {
-                $(moleNum).css('background-image','url(hurt.bmp)');
-                $(moleNum).stop().animate({'top':'100%'},300, function(){
+                    $(moleNum).css('background-image','url(hurt.bmp)');
+                    $(moleNum).stop().animate({'top':'100%'},300, function(){
 
-                    add = add - (-1);
-                    $('.scorezone').html('Score: ' + add);
-                    $(moleNum).css('background-image','url(mole.bmp)');
-                    $(moleNum).animate({'top':'0%'},5000, function(){
+                        add++;
+                        $('.scorezone').html('Score: ' + add);
+                        $(moleNum).css('background-image','url(mole.bmp)');
+                        $(moleNum).animate({'top':'0%'},5000, function(){
 
-                        game_over();
-                        jQuery('.try_again').click(function(){start();});
+                            game_over();
+                            jQuery('.try_again').click(function(){start();});
+                        });
                     });
-                });
                 }
-                
-                var keyArray = [97, 115, 100]; //a,s,d
 
+                // make letteres red up to word cursor amount in wordArray word
+                // pass in mole number 0-2 eg mole1=0, mole2=1, mole3=2
+                function changeRed(n){
+                    domMod[n] = "";
+                    for(var a = 0; a < wordArray[n].length; a++){
+                        if(a < wordCursor[n]){
+                            domMod[n] += '<span style="color: red;">' + wordArray[n].charAt(a) + '</span>';
+                        }
+                        else{
+                            domMod[n] += wordArray[n].charAt(a);
+                        }
+                    }
+                    word[n].innerHTML = domMod[n];
+                }
+
+                var word = [document.getElementById("word1"), document.getElementById("word2"), document.getElementById("word3")];
+                var domMod = ["", "", ""];
+                var dictionary = ["fj", "dk", "sl", "a;"];
+                var wordArray = ["fj", "dk", "sl"];
+                var keyArray = [97, 115, 100]; //a,s,d
+                var wordCursor = [0,0,0];
+                // fill keyArray with initial word array, TODO load word array from dictionary
+                for(i = 0; i < 3; i++){
+                    keyArray[i] = wordArray[i].charCodeAt(wordCursor[i]);
+                }
+
+                // key event listener, TODO implement typo feature to clear word progress (red letters)
                 $(document).keypress(function(e) {
                     if(e.which == 13) {
                         // enter pressed
                     }
                     if(e.which == keyArray[0]) {
-                        // a pressed
-                        wack("#mole1");
+                        wordCursor[0]++;
+                        changeRed(0);
+                        if(wordCursor[0] >= wordArray[0].length){
+                            wordCursor[0] = 0;
+                            wack("#mole1");
+                            word[0].innerHTML = wordArray[0];
+                        }
+                        keyArray[0] = wordArray[0].charCodeAt(wordCursor[0]);
                     }
                     if(e.which == keyArray[1]) {
-                        // s pressed
-                        wack("#mole2");
+                        wordCursor[1]++;
+                        changeRed(1);
+                        if(wordCursor[1] >= wordArray[1].length){
+                            wordCursor[1] = 0;
+                            wack("#mole2");
+                            word[1].innerHTML = wordArray[1];
+                        }
+                        keyArray[1] = wordArray[1].charCodeAt(wordCursor[1]);
                     }
                     if(e.which == keyArray[2]) {
-                        // d pressed
-                        wack("#mole3");
+                        wordCursor[2]++;
+                        changeRed(2);
+                        if(wordCursor[2] >= wordArray[2].length){
+                            wordCursor[2] = 0;
+                            wack("#mole3");
+                            word[2].innerHTML = wordArray[2];
+                        }
+                        keyArray[2] = wordArray[2].charCodeAt(wordCursor[2]);
                     }
                 });
-				
+            
+            // start game when page loads
 			if (do_only_once == 0){
-
-			do_only_once = 1;
-
-				start();
+                do_only_once = 1;
+                start();
 			}
 		});
     </script>
