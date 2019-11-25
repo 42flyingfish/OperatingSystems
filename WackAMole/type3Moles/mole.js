@@ -2,6 +2,7 @@ var do_only_once = 0;
 
 		jQuery(document).ready(function(){
 				var add = 0;
+			        var level = 0;
                 var speed = 10000;
 
 				function game_over(){
@@ -40,6 +41,7 @@ var do_only_once = 0;
                     $(moleNum).stop().animate({'top':'70%'},300, function(){
 
                         add++;
+			levelUP(add, level);
                         $('.scorezone').html('Score: ' + add);
                         $(moleNum).css('background-image','url(mole.bmp)');
                         $(moleNum).animate({'top':'0%'},speed, function(){
@@ -51,6 +53,11 @@ var do_only_once = 0;
                         speed = speed - 200;
                     }
                 }
+		function levelUP(score, level) {
+			if (level < 1 && score >= 20) {
+				dictionary.push.apply(dictionary, dictLen3);
+			}
+		}
 
                 // make letteres red up to word cursor amount in wordArray word
                 // pass in mole number 0-2 eg mole1=0, mole2=1, mole3=2
@@ -70,6 +77,7 @@ var do_only_once = 0;
                 var word = [document.getElementById("word1"), document.getElementById("word2"), document.getElementById("word3")];
                 var domMod = ["", "", ""];
                 var dictionary = ["a;", "gh", "ty", "ru", "ei", "wo", "qp", "bn", "vm", "c,", "x.", "zz"];
+                const dictLen3 = ["cat", "dog", "bee", "zip", "bat"];
                 var wordArray = ["fj", "dk", "sl"];
                 var keyArray = [102, 100, 115]; //f,d,s
                 var wordCursor = [0,0,0];
