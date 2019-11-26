@@ -1,37 +1,39 @@
-let canvas; // our canvas to draw on
-let ctx; // for drawing
-const canvasWidth = 1400; // Might want to set this to device size
-const canvasHeight = 900; // Currently setup for my 1080p 16x9 laptop
-let world; // our planet or main character
-let asteroids = [];
-let lives = 3; // zero on lost
-let score = 0;
-let highscore = 0; // For highscore
-let wasHit = false; // so we don't get hit on respawn
-
+//Constants
+const width = 1400; // Might want to set this to device size
+const height = 900; // Currently setup for my 1080p 16x9 laptop
 const dictionary = ['the', 'quick', 'brown', 'fox', 'jumped', 'over', 'lazy',
 	'coyote', 'usb', 'barber', 'cat', 'dog', 'linux', 'windows', 'wire',
 	'bread', 'ada', 'school', 'mac', 'python', 'cookie', 'doom', 'destroy', 'blob', 'why',
 'Europa', 'NASA']
+
+// game variables
+let canvas; // our canvas to draw on
+let ctx; // for drawing
+let world; // our planet or main character
+let asteroids = [];
+let lives = 3; // zero on lost NOT WORKING AT THE MOMENT
+let score = 0;
+let highscore = 0; // For highscore
+let wasHit = false; // so we don't get hit on respawn NOT IMPLEMENTED
+
 
 document.addEventListener('DOMContentLoaded', SetupGame);
 
 function SetupGame() {
 	canvas = document.getElementById('gameboard');
 	ctx = canvas.getContext('2d');
-	canvas.height = canvasHeight;
-	canvas.width = canvasWidth;
+	canvas.height = height;
+	canvas.width = width;
 	ctx.fillStyle = 'black';
 	ctx.fillRect(0,0,canvas.width, canvas.height);
 	highscore = getHighScore();
-	world = new World();
-	for (let i = 0; i < 1; i++) {
-		asteroids.push(new Asteroid());
-	}
+	// Create one asteroids on start to make it easier
 	document.body.addEventListener("keydown", function(e) {
 		typeRock(e.key);
 	});
-	Render();
+	world = new World();
+	asteroids.push(new Asteroid());
+	renderGame();
 }
 
 // we can store the previous highscore in the user's browser
@@ -45,13 +47,12 @@ function getHighScore() {
 // Our static character
 class World {
 	constructor() {
-		this.x = canvasWidth / 2;
-		this.y = canvasHeight / 2;
+		this.x = width / 2;
+		this.y = height / 2;
 		this.radius = 15;
 		this.ringRadiusX = 25;
 		this.ringRadiusY = 10;
 		this.rotation = 0;
-		this.strokeColor = 'white';
 		this.visible = 'true';
 	}
 	Update() {
@@ -71,12 +72,12 @@ class Asteroid {
 		this.letter = dictionary[getRandomInt(dictionary.length)];
 		// we have to check if the parameters are undefined
 		if (x === undefined) {
-			this.x = getRandomInt(canvasWidth);
+			this.x = getRandomInt(width);
 		} else {
 			this.x  = x;
 		}
 		if (y === undefined) {
-			this.y = getRandomInt(canvasHeight);
+			this.y = getRandomInt(height);
 		} else {
 			this.y = y;
 		}
@@ -106,7 +107,6 @@ class Asteroid {
 		this.angle = getRandomInt(360);
 		this.side = getRandomRangeInt(6, 8); // add some variety to the asteroids
 		this.vertAngle = ((Math.PI * 2) / this.side);
-		this.strokeColor = 'white';
 		this.radians = this.angle / Math.PI * 180;
 	}
 	Update() {
@@ -129,7 +129,8 @@ class Asteroid {
 	}
 	Draw() {
 		ctx.beginPath();
-		// Drawing a polygon in vectors requires math
+		// Drawing a n-sided polygon in vectors requires math
+		// Might have been better to use an image
 		for(let i = 0; i < this.side; i++) {
 			ctx.lineTo(this.x - this.radius * Math.cos(this.vertAngle * i + this.radians),
 				this.y - this.radius * Math.sin(this.vertAngle * i + this.radians)
@@ -143,7 +144,7 @@ class Asteroid {
 
 // Treating everything as if it was a circle for collision
 // It is an estimate not perfect, but hopefully close enough to not be noticed
-function Collision(x1, y1, r1, x2, y2, r2) {
+function collision(x1, y1, r1, x2, y2, r2) {
 	const radius = r1 + r2;
 	const diffX = x1 - x2;
 	const diffY = y1 - y2;
@@ -154,22 +155,6 @@ function Collision(x1, y1, r1, x2, y2, r2) {
 	return false;
 }
 
-// Draw the lives on the screen
-function DrawLife() {
-	let x = 1350;
-	const y = 10;
-	const radius = 5;
-	ctx.strokeStyle = 'white';
-	// draw each life on the screen
-	for (let i = 0; i < lives; i++) {
-		ctx.beginPath();
-		ctx.moveTo(x, y)
-		ctx.arc(x, y, radius, 0, 2 * Math.PI);
-		ctx.closePath();
-		ctx.stroke();
-		x -= 30; // move the cursur to the left to add more lives
-	}
-}
 
 // we need a death animation
 function killWorld() {
@@ -194,21 +179,20 @@ function getRandomRangeInt(min, max) {
 
 // for writing letters and breaking rocks
 function typeRock(letter) {
-	if (lives === 0) {
-		return;
-	}
-	for (i = 0; i < asteroids.length; i++) {
-		if (asteroids[i].letter[0] === letter) {
-			asteroids[i].letter = asteroids[i].letter.substr(1);
-			if (asteroids[i].letter === '') {
-				hitRock(i);
+	if (lives >= 0) {
+		for (i = 0; i < asteroids.length; i++) {
+			if (asteroids[i].letter[0] === letter) {
+				asteroids[i].letter = asteroids[i].letter.substr(1);
+				if (asteroids[i].letter === '') {
+					hitRock(i);
+				}
 			}
 		}
 	}
 }
 
 // hitRock breaks the rock into smaller rocks by creating new rocks
-// sometimes the new rocks will appear at a different aread. Maybe a bug?
+// sometimes the new rocks will appear at a different area. Maybe a bug?
 function hitRock(i) {
 	let level = asteroids[i].level;
 	if (level > 0) {
@@ -221,27 +205,28 @@ function hitRock(i) {
 
 function gameOver() {
 	world.visible = false;
-	ctx.font = '50px monospace';
+	ctx.font = '50px hack';
 	if (score > highscore) {
 		localStorage.setItem('highscore', score);
+		ctx.fillText('--GAME OVER--', width * 3 / 8, height / 2);
+		ctx.fillText('NEW HIGHSCORE', width * 3 / 8, height / 2 - 45);
 	} else {
-	ctx.fillText('--GAME OVER--', canvasWidth / 2, canvasHeight / 2);
+		ctx.fillText('--GAME OVER--', width * 3 / 8, height / 2);
 	}
-	ctx.fillText('--GAME OVER--', canvasWidth / 2, canvasHeight / 2);
 }
 
 // Our very complex drawing function and game logic
 // Becareful as the slowdowns can happen here with too much objects or logic
-function Render() {
-	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+function renderGame() {
+	ctx.clearRect(0, 0, width, height);
 	ctx.fillStyle = 'white';
 	if (lives <= 0) {
 		gameOver();
 	}
-	ctx.font = '21px monospace';
+	ctx.font = '21px hack';
 	ctx.fillText('SCORE: ' + score.toString(), 20, 35);
 	ctx.fillText('HIGHSCORE: ' + highscore.toString(), 20, 65);
-	DrawLife();
+	ctx.strokeStyle = 'white';
 
 	// Do not draw the world if hidden
 	if (world.visible) {
@@ -252,7 +237,7 @@ function Render() {
 	// lives are currently broken
 	if (asteroids.length !== 0) {
 		for (let i = 0; i < asteroids.length; i++) {
-			if (Collision(world.x, world.y, 11, asteroids[i].x, asteroids[i].y, asteroids[i].collisionRadius)) {
+			if (collision(world.x, world.y, 11, asteroids[i].x, asteroids[i].y, asteroids[i].collisionRadius)) {
 				killWorld();
 				break;
 			}
@@ -271,5 +256,5 @@ function Render() {
 			asteroids.push(new Asteroid());
 		}
 	}
-	requestAnimationFrame(Render);
+	requestAnimationFrame(renderGame);
 }
