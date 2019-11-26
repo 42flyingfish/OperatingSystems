@@ -141,7 +141,7 @@ class Asteroid {
 // we are using radius as a base since zero would lead to objects
 // appearing halfway off the screen
 function wrapAround(enity) {
-	let min = enity.radius;
+	let base = enity.radius;
 		if (enity.x < base) {
 			enity.x = width;
 		}
