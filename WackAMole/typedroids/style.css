@@ -1,0 +1,13 @@
+body {
+	background: black;
+}
+
+#box {
+	max-width: 1440px;
+	margin: 0 auto;
+}
+
+#gameboard {
+	background: black;
+	border: 1px solid white;
+}
