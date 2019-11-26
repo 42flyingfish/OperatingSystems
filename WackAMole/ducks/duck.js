@@ -6,9 +6,11 @@ var do_only_once = 0;
                 var gameStatus = 0;
                 var vertDict = [30, 40, 50, 70, 60, 90, 70];
                 var horDict = [50, 10, 20, 90, 70, 80, 30];
+		var currentTarget = -1; // Used for focusing on one duck. -1 means no target
 
 				function game_over(){
                     gameStatus = 0;
+		currentTarget = -1; // Used for focusing on one duck. -1 means no target
 					jQuery('.duck').stop().animate({'top':'70%'},300);
 					// jQuery('.scorezone').html('GAME OVER');
                     jQuery('#scorezone').append('<div class="try_again">TRY AGAIN</div>');
@@ -109,6 +111,7 @@ var do_only_once = 0;
                     if(speed > 500){
                         speed = speed - 200;
                     }
+			currentTarget = -1;
                 }
 
                 // make letteres red up to word cursor amount in wordArray word
@@ -143,7 +146,8 @@ var do_only_once = 0;
                         if(e.which == 13) {
                             // enter pressed
                         }
-                        if(e.which == keyArray[0]) {
+                        if(e.which == keyArray[0] && (currentTarget == -1 || currentTarget == 0)) {
+			    currentTarget = 0
                             wordCursor[0]++;
                             changeRed(0);
                             if(wordCursor[0] >= wordArray[0].length){
@@ -155,7 +159,8 @@ var do_only_once = 0;
                             }
                             keyArray[0] = wordArray[0].charCodeAt(wordCursor[0]);
                         }
-                        if(e.which == keyArray[1]) {
+                        if(e.which == keyArray[1] && (currentTarget == -1 || currentTarget == 1)) {
+			    currentTarget = 1;
                             wordCursor[1]++;
                             changeRed(1);
                             if(wordCursor[1] >= wordArray[1].length){
@@ -167,7 +172,8 @@ var do_only_once = 0;
                             }
                             keyArray[1] = wordArray[1].charCodeAt(wordCursor[1]);
                         }
-                        if(e.which == keyArray[2]) {
+                        if(e.which == keyArray[2] && (currentTarget == -1 || currentTarget == 2)) {
+			    currentTarget = 2;
                             wordCursor[2]++;
                             changeRed(2);
                             if(wordCursor[2] >= wordArray[2].length){
