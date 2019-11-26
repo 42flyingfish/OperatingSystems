@@ -55,10 +55,10 @@ class World {
 		this.rotation = 0;
 		this.visible = 'true';
 	}
-	Update() {
+	move() {
 		// stub
 	}
-	Draw() {
+	draw() {
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 		void ctx.ellipse(this.x, this.y, this.ringRadiusX, this.ringRadiusY, this.rotation, 0, 2 * Math.PI);
@@ -104,42 +104,56 @@ class Asteroid {
 			this.collisionRadius = 12;
 		}
 		this.speed = 3;
-		this.angle = getRandomInt(360);
-		this.side = getRandomRangeInt(6, 8); // add some variety to the asteroids
-		this.vertAngle = ((Math.PI * 2) / this.side);
-		this.radians = this.angle / Math.PI * 180;
+		// angle is the direction of movement
+		let angle = getRandomInt(360);
+		// the math function accept Radians only
+		this.direction = angle / Math.PI * 180;
+		// add some variety to the asteroids
+		// these will be used in the draw()
+		this.side = getRandomRangeInt(6, 8); 
+		this.sideAngle = ((Math.PI * 2) / this.side);
 	}
-	Update() {
+	move() {
+		// advances the asteroids
+		this.x += Math.cos(this.direction) * this.speed;
+		this.y += Math.sin(this.direction) * this.speed;
 		// our main concern is wrap-around for when the
 		// asteroids reach the edge of the screen
-		this.x += Math.cos(this.radians) * this.speed;
-		this.y += Math.sin(this.radians) * this.speed;
-		if (this.x < this.radius) {
-			this.x = canvas.width;
-		}
-		if (this.x > canvas.width) {
-			this.x = this.radius;
-		}
-		if (this.y < this.radius) {
-			this.y = canvas.height;
-		}
-		if (this.y > canvas.height) {
-			this.y = this.radius;
-		}
+		wrapAround(this);
 	}
-	Draw() {
+	draw() {
 		ctx.beginPath();
 		// Drawing a n-sided polygon in vectors requires math
 		// Might have been better to use an image
 		for(let i = 0; i < this.side; i++) {
-			ctx.lineTo(this.x - this.radius * Math.cos(this.vertAngle * i + this.radians),
-				this.y - this.radius * Math.sin(this.vertAngle * i + this.radians)
+			ctx.lineTo(this.x - this.radius * Math.cos(this.sideAngle * i + this.direction),
+				this.y - this.radius * Math.sin(this.sideAngle * i + this.direction)
 			); 
 		}
 		ctx.closePath();
 		ctx.stroke();
 		ctx.fillText(this.letter, this.x, this.y);
 	}
+}
+
+// A function to check if an enity is no longer on the boarder
+// moves the enity accordingly
+// we are using radius as a base since zero would lead to objects
+// appearing halfway off the screen
+function wrapAround(enity) {
+	let min = enity.radius;
+		if (enity.x < base) {
+			enity.x = width;
+		}
+		if (enity.x > canvas.width) {
+			enity.x = enity.radius;
+		}
+		if (enity.y < base) {
+			enity.y = height;
+		}
+		if (enity.y > height) {
+			enity.y = enity.radius;
+		}
 }
 
 // Treating everything as if it was a circle for collision
@@ -172,9 +186,9 @@ function getRandomInt(max) {
 // Utility function
 // source: courtesy of https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 function getRandomRangeInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; 
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min)) + min; 
 }
 
 // for writing letters and breaking rocks
@@ -230,7 +244,7 @@ function renderGame() {
 
 	// Do not draw the world if hidden
 	if (world.visible) {
-		world.Draw();
+		world.draw();
 	}
 	// Check for collision
 	// Also, do not hit the planet if we restarted the game
@@ -247,8 +261,8 @@ function renderGame() {
 	// Redraw the asteroids
 	if (asteroids.length !== 0) {
 		for (let i = 0; i < asteroids.length; i++) {
-			asteroids[i].Update();
-			asteroids[i].Draw();
+			asteroids[i].move();
+			asteroids[i].draw();
 		}
 	} else {
 		// Restart the game due to no asteroids
