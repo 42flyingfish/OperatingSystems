@@ -41,6 +41,8 @@ function getHighScore() {
 	return localStorage.getItem('highscore') || 0;
 }
 
+
+// Our static character
 class World {
 	constructor() {
 		this.x = canvasWidth / 2;
@@ -102,32 +104,33 @@ class Asteroid {
 		}
 		this.speed = 3;
 		this.angle = getRandomInt(360);
-		this.vertAngle = ((Math.PI * 2) / 6);
+		this.side = getRandomRangeInt(6, 8); // add some variety to the asteroids
+		this.vertAngle = ((Math.PI * 2) / this.side);
 		this.strokeColor = 'white';
 		this.radians = this.angle / Math.PI * 180;
 	}
 	Update() {
 		// our main concern is wrap-around for when the
 		// asteroids reach the edge of the screen
-		let radians = this.angle / Math.PI * 180;
-		this.x += Math.cos(radians) * this.speed;
-		this.y += Math.sin(radians) * this.speed;
-		if(this.x < this.radius) {
+		this.x += Math.cos(this.radians) * this.speed;
+		this.y += Math.sin(this.radians) * this.speed;
+		if (this.x < this.radius) {
 			this.x = canvas.width;
 		}
-		if(this.x > canvas.width) {
+		if (this.x > canvas.width) {
 			this.x = this.radius;
 		}
-		if(this.y < this.radius) {
+		if (this.y < this.radius) {
 			this.y = canvas.height;
 		}
-		if(this.y > canvas.height) {
+		if (this.y > canvas.height) {
 			this.y = this.radius;
 		}
 	}
 	Draw() {
 		ctx.beginPath();
-		for(let i = 0; i < 6; i++) {
+		// Drawing a polygon in vectors requires math
+		for(let i = 0; i < this.side; i++) {
 			ctx.lineTo(this.x - this.radius * Math.cos(this.vertAngle * i + this.radians),
 				this.y - this.radius * Math.sin(this.vertAngle * i + this.radians)
 			); 
@@ -139,7 +142,7 @@ class Asteroid {
 }
 
 // Treating everything as if it was a circle for collision
-// It is an estimate
+// It is an estimate not perfect, but hopefully close enough to not be noticed
 function Collision(x1, y1, r1, x2, y2, r2) {
 	const radius = r1 + r2;
 	const diffX = x1 - x2;
@@ -176,8 +179,17 @@ function killWorld() {
 
 
 // Utility function
+// source: courtesy of https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
+}
+
+// Utility function
+// source: courtesy of https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomRangeInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; 
 }
 
 // for writing letters and breaking rocks
