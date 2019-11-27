@@ -18,12 +18,17 @@
         width:10%;
         position:absolute; 
         top: 70%;
+        z-index: 2;
+        }
+    .duckimg {
+        height:100%;
+        width:100%;
+        position:absolute; 
         background-image:url(duck1.png);
         background-size:100%;
         background-repeat:no-repeat;
         background-position:0% 0%;
-        z-index: 2;
-        }
+    }
     .word{
         position:absolute;
         letter-spacing: 3px;
@@ -92,13 +97,16 @@
 		
 	<body>
 	
-		<div class="duck" id="duck1" style="top: 70%; background-image: url('duck1.png');">
+        <div class="duck" id="duck1" style="top: 70%;">
+            <div class="duckimg" id="duckimg1" style="background-image: url('duck1.png');"></div>
             <div class="word" id="word1">fj</div>
 		</div>
-		<div class="duck" id="duck2" style="top: 70%; background-image: url('duck1.png');">
+        <div class="duck" id="duck2" style="top: 70%;">
+            <div class="duckimg" id="duckimg2" style="background-image: url('duck1.png');"></div>
             <div class="word" id="word2">dk</div>
 		</div>
-		<div class="duck" id="duck3" style="top: 70%; background-image: url('duck1.png');">
+        <div class="duck" id="duck3" style="top: 70%;">
+            <div class="duckimg" id="duckimg3" style="background-image: url('duck1.png');"></div>
             <div class="word" id="word3">sl</div>
         </div>
         <div class="foreground">

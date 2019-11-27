@@ -4,16 +4,18 @@ var do_only_once = 0;
 				var add = 0;
                 var speed = 10000;
                 var gameStatus = 0;
-                var vertDict = [30, 40, 50, 70, 60, 90, 70];
-                var horDict = [50, 10, 20, 90, 70, 80, 30];
-		var currentTarget = -1; // Used for focusing on one duck. -1 means no target
+                var vertDict = [[30, 40, 40, 20, 30, 10, 10], [40, 40, 50, 30, 30, 20, 20], [50, 40, 30, 10, 30, 50, 30]];
+                var horDict = [[50, 10, 20, 90, 70, 80, 30], [20, 50, 10, 80, 40, 30, 20], [10, 20, 40, 30, 50, 70, 10]];
+		        var currentTarget = -1; // Used for focusing on one duck. -1 means no target
 
 				function game_over(){
-                    gameStatus = 0;
-		currentTarget = -1; // Used for focusing on one duck. -1 means no target
-					jQuery('.duck').stop().animate({'top':'70%'},300);
-					// jQuery('.scorezone').html('GAME OVER');
-                    jQuery('#scorezone').append('<div class="try_again">TRY AGAIN</div>');
+                    if(gameStatus == 1){
+                        gameStatus = 0;
+                        currentTarget = -1; // Used for focusing on one duck. -1 means no target
+                        //jQuery('.duck').stop().animate({'left':'-20%'},300);
+                        // jQuery('.scorezone').html('GAME OVER');
+                        jQuery('#scorezone').append('<div class="try_again">TRY AGAIN</div>');
+                    }
 				}
 	
 				function start(){
@@ -21,11 +23,18 @@ var do_only_once = 0;
 					add = 0;
                     speed = 10000;
                     jQuery('.scorezone').html('Score: ' + add);
-                    duckFlight('.duck')
-					jQuery('.duck').animate({'top':'0%'},speed, function(){
-						game_over();
-						jQuery('.try_again').click(function(){start();});
-					});
+                    jQuery('.duck').stop();
+                    duckFlight('#duck1', '#duckimg1', 0);
+                    setTimeout(function(){
+                        duckFlight('#duck2', '#duckimg2', 1);
+                    },2000);
+                    setTimeout(function(){
+                        duckFlight('#duck3', '#duckimg3', 2);
+                    },4000);
+					// jQuery('.duck').animate({'top':'0%'},speed, function(){
+					// 	game_over();
+					// 	jQuery('.try_again').click(function(){start();});
+					// });
 				}
 
 				// jQuery('.duck').hover(function(){
@@ -42,67 +51,97 @@ var do_only_once = 0;
 				// 		});
 				// 	});
                 // });
-                function duckFlight(duckNum) {
-                    var vertical = vertDict;
-                    var horizontal = horDict;
-                    $(duckNum).stop().animate({'top':vertical[0]+'%', 'left':horizontal[0]+'%'},1000, function(){
-                        duckImage(duckNum, 1, vert[0], hor[0], vert[1], hor[1])
-                        $(duckNum).stop().animate({'top':vertical[1]+'%', 'left':horizontal[1]+'%'},1000, function(){
-                            duckImage(duckNum, 1, vert[0], hor[0], vert[1], hor[1])
-                            $(duckNum).stop().animate({'top':vertical[2]+'%', 'left':horizontal[2]+'%'},1000, function(){
-                                duckImage(duckNum, 1, vert[1], hor[1], vert[2], hor[2])
-                                $(duckNum).stop().animate({'top':vertical[3]+'%', 'left':horizontal[3]+'%'},1000, function(){
-                                    duckImage(duckNum, 1, vert[2], hor[2], vert[3], hor[3])
-                                    $(duckNum).stop().animate({'top':vertical[4]+'%', 'left':horizontal[4]+'%'},1000, function(){
-                                        duckImage(duckNum, 1, vert[3], hor[3], vert[4], hor[4])
-                                        $(duckNum).stop().animate({'top':vertical[5]+'%', 'left':horizontal[5]+'%'},1000, function(){
-                                            duckImage(duckNum, 1, vert[4], hor[4], vert[5], hor[5])
-                                            $(duckNum).stop().animate({'top':vertical[6]+'%', 'left':horizontal[6]+'%'},1000, function(){
-                                                duckImage(duckNum, 1, vert[5], hor[5], vert[6], hor[6])
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                }
-                function duckImage(duckNum, num, vertPrev, horPrev, vert, hor){
-                    
-                    
+                function duckImage(duckImg, vertPrev, horPrev, vert, hor){
                     if(horPrev >= hor){
-                        if(vertPrev < vert){
-                            $(duckNum).animate({'background-image':'url(duck' + num + '.png)', 'transform':'scale(-1,1)'},200, function(){
-
-                            });
-                        }
                         if(vertPrev >= vert){
-                            $(duckNum).animate({'background-image':'url(duck' + (num + 3) + '.png)', 'transform':'scale(-1,1)'},200, function(){
-
-                            });
+                            $(duckImg).css({'background-image':'url(duck1.png)', 'transform':'scale(-1,1)'});
+                            setTimeout(function(){
+                                $(duckImg).css({'background-image':'url(duck2.png)', 'transform':'scale(-1,1)'});
+                            },400);
+                            setTimeout(function(){
+                                $(duckImg).css({'background-image':'url(duck3.png)', 'transform':'scale(-1,1)'});
+                            },800); 
+                        }
+                        if(vertPrev < vert){
+                            $(duckImg).css({'background-image':'url(duck4.png)', 'transform':'scale(-1,1)'});
+                            setTimeout(function(){
+                                $(duckImg).css({'background-image':'url(duck5.png)', 'transform':'scale(-1,1)'});
+                            },400);
+                            setTimeout(function(){
+                                $(duckImg).css({'background-image':'url(duck6.png)', 'transform':'scale(-1,1)'});
+                            },800); 
                         }
                     }
                     if(horPrev < hor){
-                        if(vertPrev < vert){
-                            $(duckNum).animate({'background-image':'url(duck' + num + '.png)'},200, function(){
-
-                            });
-                        }
                         if(vertPrev >= vert){
-                            $(duckNum).animate({'background-image':'url(duck' + (num + 3) + '.png)'},200, function(){
-
-                            });
+                            $(duckImg).css({'background-image':'url(duck1.png)', 'transform':'scale(1,1)'});
+                            setTimeout(function(){
+                                $(duckImg).css({'background-image':'url(duck2.png)', 'transform':'scale(1,1)'}); 
+                            },400);
+                            setTimeout(function(){
+                                $(duckImg).css({'background-image':'url(duck3.png)', 'transform':'scale(1,1)'});
+                            },800);
+                        }
+                        if(vertPrev < vert){
+                            $(duckImg).css({'background-image':'url(duck4.png)', 'transform':'scale(1,1)'});
+                            setTimeout(function(){
+                                $(duckImg).css({'background-image':'url(duck5.png)', 'transform':'scale(1,1)'});
+                            },400);
+                            setTimeout(function(){
+                                $(duckImg).css({'background-image':'url(duck6.png)', 'transform':'scale(1,1)'});
+                            },800); 
                         }
                     }
                 }
+                function duckFlight(duckNum, duckImg, num) {
+                    var vertical = vertDict[num];
+                    var horizontal = horDict[num];
+                    
+                    $(duckNum).stop().animate({'top':vertical[0]+'%', 'left':horizontal[0]+'%'},1200);
+                    duckImage(duckImg, 70, (num * 25), vertical[0], horizontal[0]);
+                    setTimeout(function(){
+                        $(duckNum).stop().animate({'top':vertical[1]+'%', 'left':horizontal[1]+'%'},1200);
+                        duckImage(duckImg, vertical[0], horizontal[0], vertical[1], horizontal[1]);
+                    }, 1200);
+                    setTimeout(function(){
+                        $(duckNum).stop().animate({'top':vertical[2]+'%', 'left':horizontal[2]+'%'},1200);
+                        duckImage(duckImg, vertical[1], horizontal[1], vertical[2], horizontal[2]);
+                    }, 2400);
+                    setTimeout(function(){
+                        $(duckNum).stop().animate({'top':vertical[3]+'%', 'left':horizontal[3]+'%'},1200);
+                        duckImage(duckImg, vertical[2], horizontal[2], vertical[3], horizontal[3]);
+                    }, 3600);
+                    setTimeout(function(){
+                        $(duckNum).stop().animate({'top':vertical[4]+'%', 'left':horizontal[4]+'%'},1200);
+                        duckImage(duckImg, vertical[3], horizontal[3], vertical[4], horizontal[4]);
+                    }, 4800);
+                    setTimeout(function(){
+                        $(duckNum).stop().animate({'top':vertical[5]+'%', 'left':horizontal[5]+'%'},1200);
+                        duckImage(duckImg, vertical[4], horizontal[4], vertical[5], horizontal[5]);
+                    }, 6000);
+                    setTimeout(function(){
+                        $(duckNum).stop().animate({'top':vertical[6]+'%', 'left':horizontal[6]+'%'},1200);
+                        duckImage(duckImg, vertical[5], horizontal[5], vertical[6], horizontal[6]);
+                    }, 7200);
+                    setTimeout(function(){
+                        duckImage(duckImg, vertical[6], horizontal[6], vertical[6], 0);
+                        jQuery(duckNum).stop().animate({'left':'-20%'}, 1200, function(){
+                            game_over();
+                            jQuery('.try_again').click(function(){start();});
+                        });
+                        duckImage(duckImg, vertical[6], horizontal[6], vertical[6], 0);
+                    }, 8400);
+                    
+                }
                 
-                function wack(duckNum) {
-                    $(duckNum).css('background-image','url(duck7.png)');
+                
+                function wack(duckNum, duckImg) {
+                    $(duckImg).css('background-image','url(duck7.png)');
                     $(duckNum).stop().animate({'top':'70%'},300, function(){
 
                         add++;
                         $('.scorezone').html('Score: ' + add);
-                        $(duckNum).css('background-image','url(duck1.png)');
+                        $(duckImg).css('background-image','url(duck1.png)');
                         $(duckNum).animate({'top':'0%'},speed, function(){
                             game_over();
                             jQuery('.try_again').click(function(){start();});
@@ -111,7 +150,7 @@ var do_only_once = 0;
                     if(speed > 500){
                         speed = speed - 200;
                     }
-			currentTarget = -1;
+			        currentTarget = -1;
                 }
 
                 // make letteres red up to word cursor amount in wordArray word
@@ -147,12 +186,12 @@ var do_only_once = 0;
                             // enter pressed
                         }
                         if(e.which == keyArray[0] && (currentTarget == -1 || currentTarget == 0)) {
-			    currentTarget = 0
+			                currentTarget = 0
                             wordCursor[0]++;
                             changeRed(0);
                             if(wordCursor[0] >= wordArray[0].length){
                                 wordCursor[0] = 0;
-                                wack("#duck1");
+                                wack("#duck1", "#duckimg1");
                                 dictionary.push(wordArray[0]);
                                 wordArray[0] = dictionary.shift();
                                 word[0].innerHTML = wordArray[0];
@@ -160,12 +199,12 @@ var do_only_once = 0;
                             keyArray[0] = wordArray[0].charCodeAt(wordCursor[0]);
                         }
                         if(e.which == keyArray[1] && (currentTarget == -1 || currentTarget == 1)) {
-			    currentTarget = 1;
+			                currentTarget = 1;
                             wordCursor[1]++;
                             changeRed(1);
                             if(wordCursor[1] >= wordArray[1].length){
                                 wordCursor[1] = 0;
-                                wack("#duck2");
+                                wack("#duck2", "#duckimg2");
                                 dictionary.push(wordArray[1]);
                                 wordArray[1] = dictionary.shift();
                                 word[1].innerHTML = wordArray[1];
@@ -173,12 +212,12 @@ var do_only_once = 0;
                             keyArray[1] = wordArray[1].charCodeAt(wordCursor[1]);
                         }
                         if(e.which == keyArray[2] && (currentTarget == -1 || currentTarget == 2)) {
-			    currentTarget = 2;
+			                currentTarget = 2;
                             wordCursor[2]++;
                             changeRed(2);
                             if(wordCursor[2] >= wordArray[2].length){
                                 wordCursor[2] = 0;
-                                wack("#duck3");
+                                wack("#duck3", "#duckimg3");
                                 dictionary.push(wordArray[2]);
                                 wordArray[2] = dictionary.shift();
                                 word[2].innerHTML = wordArray[2];
