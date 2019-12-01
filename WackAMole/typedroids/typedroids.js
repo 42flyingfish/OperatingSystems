@@ -15,6 +15,8 @@ let lives = 3; // zero on lost NOT WORKING AT THE MOMENT
 let score = 0;
 let highscore = 0; // For highscore
 let wasHit = false; // so we don't get hit on respawn NOT IMPLEMENTED
+let restartHint = false;
+let timerStart = false;
 
 
 document.addEventListener('DOMContentLoaded', SetupGame);
@@ -44,6 +46,8 @@ function SetupGame() {
 }
 
 function start() {
+	restartHint = false;
+	timerStart = false;
 	asteroids = [];
 	world.visible = true;
 	lives = 3;
@@ -158,18 +162,18 @@ class Asteroid {
 // appearing halfway off the screen
 function wrapAround(enity) {
 	let base = enity.radius;
-		if (enity.x < base) {
-			enity.x = width;
-		}
-		if (enity.x > canvas.width) {
-			enity.x = enity.radius;
-		}
-		if (enity.y < base) {
-			enity.y = height;
-		}
-		if (enity.y > height) {
-			enity.y = enity.radius;
-		}
+	if (enity.x < base) {
+		enity.x = width;
+	}
+	if (enity.x > canvas.width) {
+		enity.x = enity.radius;
+	}
+	if (enity.y < base) {
+		enity.y = height;
+	}
+	if (enity.y > height) {
+		enity.y = enity.radius;
+	}
 }
 
 // Treating everything as if it was a circle for collision
@@ -236,13 +240,28 @@ function hitRock(i) {
 function gameOver() {
 	world.visible = false;
 	ctx.font = '50px hack';
+	ctx.fillText('--GAME OVER--', width * 3 / 8, height / 2);
+	// Check for new highscore and alert the player
 	if (score > highscore) {
 		localStorage.setItem('highscore', score);
-		ctx.fillText('--GAME OVER--', width * 3 / 8, height / 2);
 		ctx.fillText('NEW HIGHSCORE', width * 3 / 8, height / 2 - 45);
-	} else {
-		ctx.fillText('--GAME OVER--', width * 3 / 8, height / 2);
 	}
+	// Show a small hint on how to restart the game after a few seconds
+	if (!timerStart) {
+		timerStart = true;
+		setTimeout(setRestartHint, 3000);
+	} else {
+		if (restartHint) {
+			ctx.font = '40px hack';
+			ctx.fillText('Hit Enter to Restart', width * 3 / 8, height / 2 + 45);
+			ctx.font = '50px hack';
+		}
+	}
+
+}
+
+function setRestartHint() {
+	restartHint = true;
 }
 
 // Our very complex drawing function and game logic
