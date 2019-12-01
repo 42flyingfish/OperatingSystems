@@ -3,8 +3,8 @@ const width = 1400; // Might want to set this to device size
 const height = 900; // Currently setup for my 1080p 16x9 laptop
 const dictionary = ['the', 'quick', 'brown', 'fox', 'jumped', 'over', 'lazy',
 	'coyote', 'usb', 'barber', 'cat', 'dog', 'linux', 'windows', 'wire',
-	'bread', 'ada', 'school', 'mac', 'python', 'cookie', 'doom', 'destroy', 'blob', 'why',
-'Europa', 'NASA']
+	'bread', 'ada', 'school', 'mac', 'python', 'cookie', 'doom', 'destroy',
+	'blob', 'why', 'Europa', 'NASA']
 
 // game variables
 let canvas; // our canvas to draw on
@@ -31,9 +31,25 @@ function SetupGame() {
 	document.body.addEventListener("keydown", function(e) {
 		typeRock(e.key);
 	});
+	// Rough restart button
+	document.body.addEventListener("keydown", function(e) {
+		if (lives < 1 && e.which == 13) {
+			start();
+		}
+	});
 	world = new World();
-	asteroids.push(new Asteroid());
+	start();
+	//asteroids.push(new Asteroid());
 	renderGame();
+}
+
+function start() {
+	asteroids = [];
+	world.visible = true;
+	lives = 3;
+	score = 0;
+	wasHit = false;
+	asteroids.push(new Asteroid());
 }
 
 // we can store the previous highscore in the user's browser
