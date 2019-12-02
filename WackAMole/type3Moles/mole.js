@@ -12,7 +12,7 @@ var do_only_once = 0;
 					jQuery('#scorezone').append('<div class="try_again">TRY AGAIN</div>');
 					// Setting highscore
 	            			if (add > highscore) {
-						localStorage.setItem('highscore', add);
+						localStorage.setItem('moleHighscore', add);
 						highscore = add;
 					}
 				}
@@ -150,5 +150,5 @@ var do_only_once = 0;
 // this is how to access it
 // we set it to zero if the localStorage returns None
 function getHighScore() {
-	return localStorage.getItem('highscore') || 0;
+	return localStorage.getItem('moleHighscore') || 0;
 }

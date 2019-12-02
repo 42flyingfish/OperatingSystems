@@ -19,7 +19,7 @@ var do_only_once = 0;
 
 				function game_over(){
 	            if (add > highscore) {
-		       localStorage.setItem('highscore', add);
+		       localStorage.setItem('duckHighscore', add);
 			    highscore = add;
 		    }
                     if(gameStatus == 1){
@@ -252,5 +252,5 @@ var do_only_once = 0;
 // this is how to access it
 // we set it to zero if the localStorage returns None
 function getHighScore() {
-	return localStorage.getItem('highscore') || 0;
+	return localStorage.getItem('duckHighscore') || 0;
 }

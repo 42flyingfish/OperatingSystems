@@ -1,4 +1,3 @@
-//Constants
 const width = 1400; // Might want to set this to device size
 const height = 900; // Currently setup for my 1080p 16x9 laptop
 const dictionary = ['the', 'quick', 'brown', 'fox', 'jumped', 'over', 'lazy',
@@ -66,7 +65,7 @@ function start() {
 // this is how to access it
 // we set it to zero if the localStorage returns None
 function getHighScore() {
-	return localStorage.getItem('highscore') || 0;
+	return localStorage.getItem('typedroidHighscore') || 0;
 }
 
 
@@ -250,7 +249,7 @@ function gameOver() {
 	ctx.fillText('--GAME OVER--', width * 3 / 8, height / 2);
 	// Check for new highscore and alert the player
 	if (score > highscore) {
-		localStorage.setItem('highscore', score);
+		localStorage.setItem('typedroidHighscore', score);
 		ctx.fillText('NEW HIGHSCORE', width * 3 / 8, height / 2 - 45);
 	}
 	// Show a small hint on how to restart the game after a few seconds
