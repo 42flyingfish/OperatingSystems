@@ -7,8 +7,11 @@ var do_only_once = 0;
                 var gameStatus = 0;
                 var vertDict = [[30, 40, 40, 20, 30, 10, 10], [40, 40, 50, 30, 30, 20, 20], [50, 40, 30, 10, 30, 50, 30]];
                 var horDict = [[50, 10, 20, 90, 70, 80, 30], [20, 50, 10, 80, 40, 30, 20], [10, 20, 40, 30, 50, 70, 10]];
+                var moveCursor = 0;
+                var level = 0;
                 var currentTarget = -1; // Used for focusing on one duck. -1 means no target
                 var dropInProgress = [0, 0, 0];
+                let highscore = getHighScore();
 
                 var word = [document.getElementById("word1"), document.getElementById("word2"), document.getElementById("word3")];
                 var domMod = ["", "", ""];
@@ -33,7 +36,11 @@ var do_only_once = 0;
                             keyArray[i] = wordArray[i].charCodeAt(wordCursor[i]);
                             word[i].innerHTML = wordArray[i];
                         }
-                        
+                        if (add > highscore) {
+                            localStorage.setItem('duckHighscore', add);
+                             highscore = add;
+                         }
+                         $(".scorezone").css({'z-index':20});
                     }
 				}
 	
@@ -42,7 +49,9 @@ var do_only_once = 0;
 					add = 0;
                     speed = 1800;
                     jQuery('.scorezone').html('Score: ' + add);
+                    jQuery('.highscore').html('HighScore: ' + highscore);
                     jQuery('.duck').stop();
+                    $(".scorezone").css({'z-index':1});
                     duckFlight('#duck1', '#duckimg1', 0);
                     setTimeout(function(){
                         duckFlight('#duck2', '#duckimg2', 1);
@@ -111,13 +120,18 @@ var do_only_once = 0;
                     }
                 }
                 function duckFlight(duckNum, duckImg, num) {
-                    var a = vertDict[num].pop();
-                    vertDict[num].unshift(a);
-                    var b = horDict[num].pop();
-                    horDict[num].unshift(b);
-                    var vertical = vertDict[num];
-                    var horizontal = horDict[num];
-                    //call translation (animations occur in seperate thread) then call image change, both done at 1200ms
+                    // var a = vertDict[num].pop();
+                    // vertDict[num].unshift(a);
+                    // var b = horDict[num].pop();
+                    // horDict[num].unshift(b);
+                    var vertical = [[30, 40, 40, 20, 30, 10, 10], [40, 40, 50, 30, 30, 20, 20], [50, 40, 30, 10, 30, 50, 30]];
+                    var horizontal = [[50, 10, 20, 90, 70, 80, 30], [20, 50, 10, 80, 40, 30, 20], [10, 20, 40, 30, 50, 70, 10]];
+                    for(i = 0; i <= 6; i++){
+                        vertical[i] = vertDict[num][(i+moveCursor)%7];
+                        horizontal[i] = horDict[num][(i+moveCursor)%7];
+                    }
+                    moveCursor++;
+                    //call translation (animations occur in seperate process) then call image change, both done at 1200ms
                     //for duckImage, 1st call gets current position and compares to destination (array[0]), all other calls compare prev and current dest in array
                     $(duckNum).stop().animate({'top':vertical[0]+'%', 'left':horizontal[0]+'%'},speed, "linear", function(){
                         $(duckNum).stop().animate({'top':vertical[1]+'%', 'left':horizontal[1]+'%'},speed, "linear", function(){
@@ -164,26 +178,30 @@ var do_only_once = 0;
                             
                             word[num].innerHTML = wordArray[num];
                             dropInProgress[num] = 0;
-                            duckFlight(duckNum, duckImg, 0);
+                            duckFlight(duckNum, duckImg, num);
                         }, 1600);
 
                         
                     });
-                    if(add == 50){
+                    if(add >= 50 && level == 0 ){
+                        level++;
                         speed = startspeed;
                         dictionary = ["fdsa", "jkl;", "asdf", ";lkj", "gfdsa", "hjkl;", "asdfg", ";lkjh", "gfdsa", "hjkl;", "asdfg", ";lkjh", "fdsa", "jkl;", "asdf", ";lkj"];
                 
                     }
-                    else if (add == 100) {
+                    else if (add > 100 && level == 1) {
+                        level++;
                         speed = startspeed;
                         dictionary = ["rewq", "uiop", "qwer", "poiu", "trewq", "yuiop", "qwert", "poiuy", "trewq", "yuiop", "qwert", "poiuy", "rewq", "uiop", "qwer", "poiu"];
                 
                     }
-                    else if (add == 150) {
+                    else if (add >= 150 && level == 2) {
+                        level++;
                         speed = startspeed;
                         dictionary = ["vcxz", "nm,.", "zxcv", ".,mn", "bvcxz", "nm,.", "zxcvb", ".,mn", "bvcxz", "nm,.", "zxcvb", ".,mn", "vcxz", "m,.", "zxcv", ".,m"];
                     }
-                    else if (add == 200) {
+                    else if (add >= 200 && level == 3) {
+                        level++;
                         speed = startspeed;
                         dictionary = ['hard', 'words', 'are', 'coming', 'get', 'ready', 'go',
                                         'sesquipedalian', 'satellite', 'accoutrements', 'secondary', 'dilapidated', 'linux', 'windows', 'macintosh',
@@ -287,4 +305,11 @@ var do_only_once = 0;
                 do_only_once = 1;
                 start();
 			}
-		});
+        });
+        
+        // we can store the previous highscore in the user's browser
+        // this is how to access it
+        // we set it to zero if the localStorage returns None
+        function getHighScore() {
+            return localStorage.getItem('duckHighscore') || 0;
+        }
