@@ -15,10 +15,10 @@ body {
 .keyboard {
 	position: absolute;
 	bottom: 0px;
-	width: 58vw;
+	width: 45vw;
 	z-index: 15;
 	font-family: Hack, Arial, Helvetica, sans-serif;
-	opacity: 0.4
+	opacity: 0.3;
 }
 
 .KeyboardKey-button {

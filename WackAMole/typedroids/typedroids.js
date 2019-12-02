@@ -39,6 +39,12 @@ function SetupGame() {
 			start();
 		}
 	});
+	$(document).keypress(function(e) {
+		$("#"+String.fromCharCode(e.which)).css({fill:"red", transition:"1.0s"});
+		$("#"+String.fromCharCode(e.which)).animate({'fill':'red'}, 1000, function(){
+			$("#"+String.fromCharCode(e.which)).css({fill:"#efefee", transition:"1.0s"});
+		});
+	});
 	world = new World();
 	start();
 	//asteroids.push(new Asteroid());
@@ -81,8 +87,9 @@ class World {
 	draw() {
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-		void ctx.ellipse(this.x, this.y, this.ringRadiusX, this.ringRadiusY, this.rotation, 0, 2 * Math.PI);
-		ctx.closePath();
+		ctx.stroke();
+		ctx.ellipse(this.x, this.y, this.ringRadiusX, this.ringRadiusY, this.rotation, 0, 2 * Math.PI);
+		//		ctx.closePath();
 		ctx.stroke();
 	}
 }
