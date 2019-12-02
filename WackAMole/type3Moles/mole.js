@@ -4,17 +4,24 @@ var do_only_once = 0;
 				var add = 0;
 			        var level = 0;
                 var speed = 10000;
+			let highscore = getHighScore();
 
 				function game_over(){
 					jQuery('.mole').stop().animate({'top':'70%'},300);
 					// jQuery('.scorezone').html('GAME OVER');
 					jQuery('#scorezone').append('<div class="try_again">TRY AGAIN</div>');
+					// Setting highscore
+	            			if (add > highscore) {
+						localStorage.setItem('highscore', add);
+						highscore = add;
+					}
 				}
 	
 				function start(){
 					add = 0;
                     speed = 10000;
 					jQuery('.scorezone').html('Score: ' + add);
+					jQuery('.highscore').html('Highscore: ' + highscore);
 					jQuery('.mole').animate({'top':'0%'},speed, function(){
 						game_over();
 						jQuery('.try_again').click(function(){start();});
@@ -138,3 +145,10 @@ var do_only_once = 0;
                 start();
 			}
 		});
+
+// we can store the previous highscore in the user's browser
+// this is how to access it
+// we set it to zero if the localStorage returns None
+function getHighScore() {
+	return localStorage.getItem('highscore') || 0;
+}

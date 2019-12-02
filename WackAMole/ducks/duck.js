@@ -15,8 +15,13 @@ var do_only_once = 0;
                 var wordArray = ["fj", "dk", "sl"];
                 var keyArray = [102, 100, 115]; //f,d,s
                 var wordCursor = [0,0,0];
+                let highscore = getHighScore();
 
 				function game_over(){
+	            if (add > highscore) {
+		       localStorage.setItem('highscore', add);
+			    highscore = add;
+		    }
                     if(gameStatus == 1){
                         gameStatus = 0;
                         currentTarget = -1; // Used for focusing on one duck. -1 means no target
@@ -24,6 +29,7 @@ var do_only_once = 0;
                         // jQuery('.scorezone').html('GAME OVER');
                         jQuery('#scorezone').append('<div class="try_again">TRY AGAIN</div>');
                     }
+
 				}
 	
 				function start(){
@@ -31,6 +37,7 @@ var do_only_once = 0;
 					add = 0;
                     speed = 1800;
                     jQuery('.scorezone').html('Score: ' + add);
+                    jQuery('.highscore').html('HighScore: ' + highscore);
                     jQuery('.duck').stop();
                     duckFlight('#duck1', '#duckimg1', 0);
                     setTimeout(function(){
@@ -240,3 +247,10 @@ var do_only_once = 0;
                 start();
 			}
 		});
+
+// we can store the previous highscore in the user's browser
+// this is how to access it
+// we set it to zero if the localStorage returns None
+function getHighScore() {
+	return localStorage.getItem('highscore') || 0;
+}
