@@ -1,0 +1,56 @@
+#!/bin/bash
+
+make
+
+chmod u+x test_executable.out
+
+touch testfile_a.txt
+echo "testing 123" > testfile_a.txt
+
+echo "--test ls (ls)--"
+./cppshell.out <<< "ls"
+echo -e "exit\n"
+
+echo "--test pwd (pwd)--"
+./cppshell.out <<< "pwd"
+echo -e "exit\n"
+
+echo "--test cp (cp testfile_a.txt copy_of_a.txt)--"
+./cppshell.out <<< "cp testfile_a.txt copy_of_a.txt"
+echo -e "exit\n"
+
+echo "--test error cp (cp)--"
+./cppshell.out <<< "cp"
+echo -e "exit\n"
+
+echo "--test mkdir (mkdir test_dir)--"
+./cppshell.out <<< "mkdir test_dir"
+echo -e "exit\n"
+
+echo "--test error mkdir (mkdir)--"
+./cppshell.out <<< "mkdir"
+echo -e "exit\n"
+
+echo "--test cd (cd test_dir)--"
+./cppshell.out <<< "cd test_dir"
+echo -e "exit\n"
+
+echo "--test cd (cd ..)--"
+./cppshell.out <<< "cd .."
+echo -e "exit\n"
+
+echo "--test error cd (cd)--"
+./cppshell.out <<< "cd"
+echo -e "exit\n"
+
+echo "--test rmdir (rmdir test_dir)--"
+./cppshell.out <<< "rmdir test_dir"
+echo -e "exit\n"
+
+echo "--test error rmdir (rmdir)--"
+./cppshell.out <<< "rmdir"
+echo -e "exit\n"
+
+echo "--test test executable (./test_executable.out)--"
+./cppshell.out <<< "./test_executable.out"
+echo -e "exit\n"

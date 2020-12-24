@@ -1,23 +1,20 @@
-CC      = gcc
-CFLAGS  = -O
-LDFLAGS  = -O 
+# compiler to use
+CC = gcc
+# enable warnings flag for gcc
+CFLAGS = -Wall -g
+# recompile if header file changes
+
+VPATH := src
+DEPS = ls.h cd.h pwd.h rmdir.h mkdir.h cp.h
+OBJ = cppshell.o ls.o cd.o pwd.o rmdir.o mkdir.o cp.o
 
 
-all: cppshell
+%.o: %.c $(DEPS)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-simple:  cppshell.o
-	$(CC) -o $@ $^ $(LDFLAGS)
+cppshell.out: $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
 
-run: 
-	./cppshell
-
-test: 
-	./cppshell < testfile
-
-clean:
-	rm cppshell
-
-
-.c.o:
-	$(CC)  $(CFLAGS) -c $<
-
+.PHONY: force
+force:
+	./cppshell.out

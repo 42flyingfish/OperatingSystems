@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+                <meta charset="utf-8"/>
+                <link rel="stylesheet" href="style.css">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+                
+                <script>
+                    window.console = window.console || function(t) {};
+                </script>
+                <script>
+                    if (document.location.search.match(/type=embed/gi)) {
+                        window.parent.postMessage("resize", "*");
+                    }
+                </script>
+        </head>
+<div class="wrapper">
+    
+	<header>
+		<h1>Whack-a-Mole</h1>
+		<div class="score-box" id="score-box">
+			<h2>Score</h2>
+			<p class="score-out" id="score-out">0</p>
+		</div><!-- end score-box -->
+	</header>
+	<main>
+		<button class="btn-start" id="btn-start">Start Game</button>
+		<div class="game-container">
+			<div class="row">
+				<div class="box">
+					<img src="https://res.michaelwhyte.ca/mole.png" alt="mole" class="mole-pic" id="mole-01">
+					<img src="https://res.michaelwhyte.ca/dirt.svg" alt="dirt" class="dirt-pic">
+					<div class="mask"></div><!-- end mask -->
+				</div><!-- end box -->
+				<div class="box">
+					<img src="https://res.michaelwhyte.ca/mole.png" alt="mole" class="mole-pic"
+					id="mole-02">
+					<img src="https://res.michaelwhyte.ca/dirt.svg" alt="dirt" class="dirt-pic">
+					<div class="mask"></div><!-- end mask -->
+				</div><!-- end box -->
+				<div class="box">
+					<img src="https://res.michaelwhyte.ca/mole.png" alt="mole" class="mole-pic"
+					id="mole-03">
+					<img src="https://res.michaelwhyte.ca/dirt.svg" alt="dirt" class="dirt-pic">
+					<div class="mask"></div><!-- end mask -->
+				</div><!-- end box -->
+			</div><!-- end row -->
+			<div class="row">
+				<div class="box">
+					<img src="https://res.michaelwhyte.ca/mole.png" alt="mole" class="mole-pic" id="mole-04">
+					<img src="https://res.michaelwhyte.ca/dirt.svg" alt="dirt" class="dirt-pic">
+					<div class="mask"></div><!-- end mask -->
+				</div><!-- end box -->
+				<div class="box">
+					<img src="https://res.michaelwhyte.ca/mole.png" alt="mole" class="mole-pic" id="mole-05">
+					<img src="https://res.michaelwhyte.ca/dirt.svg" alt="dirt" class="dirt-pic">
+					<div class="mask"></div><!-- end mask -->
+				</div><!-- end box -->
+				<div class="box">
+					<img src="https://res.michaelwhyte.ca/mole.png" alt="mole" class="mole-pic" id="mole-06">
+					<img src="https://res.michaelwhyte.ca/dirt.svg" alt="dirt" class="dirt-pic">
+					<div class="mask"></div><!-- end mask -->
+				</div><!-- end box -->
+			</div><!-- end row -->
+		</div><!-- end game-container -->
+	</main>
+	<footer>
+    </footer>
+    <script id="rendered-js" src="script.js"></script>
+</div><!-- end wrapper -->
+</html>

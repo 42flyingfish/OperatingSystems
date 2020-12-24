@@ -16,3 +16,13 @@ https://www.youtube.com/watch?v=9seb8hddeK4
 
 6) Shell video with fork and exec (long)
 https://www.youtube.com/watch?v=5Qim9wufNP0
+
+7) Linux Man Page for opendir()
+https://linux.die.net/man/3/opendir
+
+
+8) Linux Man Page for nftw
+https://linux.die.net/man/3/nftw
+
+9) Linux Man Page for mkdir
+https://linux.die.net/man/3/mkdir

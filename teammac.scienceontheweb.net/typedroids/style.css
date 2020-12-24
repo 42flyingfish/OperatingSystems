@@ -1,0 +1,41 @@
+body {
+	background: black;
+}
+
+#box {
+	max-width: 1440px;
+	margin: 0 auto;
+}
+
+#gameboard {
+	background: black;
+	border: 1px solid white;
+}
+
+.keyboard {
+	position: absolute;
+	bottom: 0px;
+	width: 45vw;
+	z-index: 15;
+	font-family: Hack, Arial, Helvetica, sans-serif;
+	opacity: 0.3;
+}
+
+.KeyboardKey-button {
+	fill: #efefee;
+	opacity: 0.8;
+}
+
+.KeyboardKey-symbol {
+	font-size: 11px;
+}
+
+.KeyboardKey-symbol--primary {
+	font-size: 16px;
+	font-weight: 600;
+	text-shadow:
+	-1px -1px 0 #FFF,  
+	1px -1px 0 #FFF,
+	-1px 1px 0 #FFF,
+	1px 1px 0 #FFF;
+}
